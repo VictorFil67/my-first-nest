@@ -3,6 +3,7 @@ import {
   Controller,
   Delete,
   Get,
+  NotFoundException,
   Param,
   ParseIntPipe,
   Post,
@@ -22,7 +23,7 @@ export class AppController {
   }
 
   @Post()
-  @Redirect('/', 301)
+  @Redirect('/articles', 301)
   create(@Body() body: any): void {
     const id = articles.length + 1;
     const article = new Article(body.title, body.content, id);
@@ -44,13 +45,16 @@ export class AppController {
   }
   // @Get()
   @Delete(':id')
-  @Redirect('/', 301)
+  // @Redirect('/articles', 301)
   delete(@Param('id', ParseIntPipe) id: number) {
     const index = articles.findIndex((article) => article.id === id);
     if (index > -1) {
       const deleteArticle = articles.splice(index, 1);
       console.log(deleteArticle);
       console.log(articles);
+      return { message: 'Article deleted' };
+    } else {
+      throw new NotFoundException(`Article with ID ${id} not found`);
     }
   }
 }

@@ -11,20 +11,35 @@ html(lang="en")
     ul
       each article in articles
         // #{...} — интерполяция. Так шаблонизатор понимает, что сюда надо встроить данные.
-        li #{article.title}  
+        li(id=`article-${article.id}`)
+          | #{article.title}   
           a(href=`articles/${article.id}`)  Читать
-          //- form(method="POST" action=article.id)
-            input(type="hidden" name="_method" value="DELETE")
-            button(type="submit") Удалить
+
           button(type="button" onclick=`deleteArticle(${article.id})`) Удалить       
           //- button(onclick=`deleteArticle(${article.id})`) Удалить
     a(href="articles/create") Создать   
 
     script.
+      //- function deleteArticle(id) {
+      //-   fetch(`articles/${id}`, { method: 'DELETE' })
+      //-     .then(response => response.json())
+      //-     .then(data => console.log(data))
+      //-     .catch(error => console.error('Error:', error));
+      //- }
       function deleteArticle(id) {
-        fetch(`articles/${id}`, { method: 'DELETE' })
-          .then(response => response.json())
-          .then(data => console.log(data))
-          .catch(error => console.error('Error:', error));
+        fetch(`/articles/${id}`, {
+          method: 'DELETE'
+        })
+        .then(response => {
+          if (response.ok) {
+            // Удаляем элемент статьи из DOM после успешного удаления
+            const articleElement = document.getElementById(`article-${id}`);
+            if (articleElement) {
+              articleElement.remove();
+            }
+          } else {
+            console.error('Не удалось удалить статью:', response.statusText);
+          }
+        })
+        .catch(error => console.error('Ошибка удаления:', error));
       }
-    
