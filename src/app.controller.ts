@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   Param,
   ParseIntPipe,
@@ -12,7 +13,7 @@ import { AppService } from './app.service';
 import { articles } from './articles';
 import { Article } from './article.model';
 
-@Controller()
+@Controller('articles')
 export class AppController {
   @Get('create')
   @Render('create-article')
@@ -20,7 +21,7 @@ export class AppController {
     return;
   }
 
-  @Post('articles')
+  @Post()
   @Redirect('/', 301)
   create(@Body() body: any): void {
     const id = articles.length + 1;
@@ -40,5 +41,16 @@ export class AppController {
   @Render('article')
   getById(@Param('id', ParseIntPipe) id: number) {
     return articles.find((article) => article.id === id);
+  }
+  // @Get()
+  @Delete(':id')
+  @Redirect('/', 301)
+  delete(@Param('id', ParseIntPipe) id: number) {
+    const index = articles.findIndex((article) => article.id === id);
+    if (index > -1) {
+      const deleteArticle = articles.splice(index, 1);
+      console.log(deleteArticle);
+      console.log(articles);
+    }
   }
 }

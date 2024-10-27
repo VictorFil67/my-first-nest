@@ -12,5 +12,19 @@ html(lang="en")
       each article in articles
         // #{...} — интерполяция. Так шаблонизатор понимает, что сюда надо встроить данные.
         li #{article.title}  
-          a(href=article.id)  Читать
-    a(href="create") Создать    
+          a(href=`articles/${article.id}`)  Читать
+          //- form(method="POST" action=article.id)
+            input(type="hidden" name="_method" value="DELETE")
+            button(type="submit") Удалить
+          button(type="button" onclick=`deleteArticle(${article.id})`) Удалить       
+          //- button(onclick=`deleteArticle(${article.id})`) Удалить
+    a(href="articles/create") Создать   
+
+    script.
+      function deleteArticle(id) {
+        fetch(`articles/${id}`, { method: 'DELETE' })
+          .then(response => response.json())
+          .then(data => console.log(data))
+          .catch(error => console.error('Error:', error));
+      }
+    
