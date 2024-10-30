@@ -20,12 +20,7 @@ html(lang="en")
     a(href="articles/create") Создать   
 
     script.
-      //- function deleteArticle(id) {
-      //-   fetch(`articles/${id}`, { method: 'DELETE' })
-      //-     .then(response => response.json())
-      //-     .then(data => console.log(data))
-      //-     .catch(error => console.error('Error:', error));
-      //- }
+      
       function deleteArticle(id) {
         fetch(`/articles/${id}`, {
           method: 'DELETE'
