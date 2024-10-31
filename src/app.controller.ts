@@ -50,7 +50,7 @@ export class AppController {
     const index = articles.findIndex((article) => article.id === id);
     if (index > -1) {
       const deleteArticle = articles.splice(index, 1);
-      // console.log(deleteArticle);
+      console.log(deleteArticle);
       // console.log(articles);
       return { message: 'Article deleted' };
     } else {
