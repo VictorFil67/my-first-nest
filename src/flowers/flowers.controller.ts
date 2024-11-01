@@ -6,6 +6,7 @@ export class FlowersController {
   constructor(private readonly flowersService: FlowersService) {}
   @Get()
   findAll() {
+    console.log('after Request');
     return this.flowersService.findAll();
   }
 }
